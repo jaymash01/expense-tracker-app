@@ -64,6 +64,20 @@ class CategoryDetailsResponse {
   }
 }
 
+class UpdateCategoryResponse {
+  String message;
+  Category? data;
+
+  UpdateCategoryResponse({required this.message, this.data});
+
+  factory UpdateCategoryResponse.fromJson(Map<String, dynamic> json) {
+    return UpdateCategoryResponse(
+      message: json['message'],
+      data: json['data'] != null ? Category.fromJson(json['data']) : null,
+    );
+  }
+}
+
 class DeleteCategoryResponse {
   String message;
   Category? data;

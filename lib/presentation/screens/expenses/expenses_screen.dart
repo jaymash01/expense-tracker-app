@@ -4,6 +4,7 @@ import 'package:expense_tracker/core/config/app_dimensions.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_bloc.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_event.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_state.dart';
+import 'package:expense_tracker/presentation/navigation/app_routes.dart';
 import 'package:expense_tracker/presentation/screens/expenses/expense_filters_sheet.dart';
 import 'package:expense_tracker/presentation/widgets/dialogs.dart';
 import 'package:expense_tracker/presentation/widgets/empty_placeholder.dart';
@@ -47,9 +48,14 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_rounded),
+          icon: const Icon(Icons.arrow_back),
         ),
-        title: Text('Create Expense'),
+        title: Text('My Expenses'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Create expense',
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.createExpense),
+        child: const Icon(Icons.add),
       ),
       body: BlocBuilder<ExpensesBloc, ExpensesState>(
         builder: (BuildContext context, ExpensesState state) {
@@ -87,7 +93,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         keyboardType: TextInputType.name,
         decoration: InputDecoration(
           hintText: 'Search expenses',
-          prefixIcon: const Icon(Icons.search_rounded),
+          prefixIcon: const Icon(Icons.search),
           suffixIcon: SizedBox(
             width: 96.0,
             child: TextButton(
@@ -97,7 +103,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 children: <Widget>[
                   Text('Filter'),
                   SizedBox(width: AppDimensions.spaceS),
-                  Icon(Icons.filter_list_rounded),
+                  Icon(Icons.filter_list),
                 ],
               ),
             ),
@@ -127,7 +133,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
           AppDimensions.spaceM,
           0,
           AppDimensions.spaceM,
-          AppDimensions.spaceM,
+          96.0,
         ),
         shrinkWrap: true,
         physics: const AlwaysScrollableScrollPhysics(),
@@ -136,7 +142,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         itemBuilder: (BuildContext context, int index) {
           if (index < state.expenses.length) {
             final expense = state.expenses[index];
-            return ExpenseCard(expense: expense, onTap: () => true);
+            return ExpenseCard(expense: expense);
           } else {
             return LoadingIndicator(isLoading: state.isLoading);
           }

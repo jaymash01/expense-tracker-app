@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:expense_tracker/data/models/category_model.dart';
 
 class CategoriesEvent extends Equatable {
   const CategoriesEvent();
@@ -14,4 +15,13 @@ class LoadCategories extends CategoriesEvent {
 
   @override
   List<Object?> get props => [params];
+}
+
+class DeleteCategory extends CategoriesEvent {
+  final Category category;
+
+  const DeleteCategory(this.category);
+
+  @override
+  List<Object?> get props => [category];
 }

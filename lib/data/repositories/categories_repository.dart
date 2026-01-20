@@ -43,6 +43,20 @@ class CategoriesRepository {
     return CategoryDetailsResponse.fromJson(jsonResponse);
   }
 
+  Future<UpdateCategoryResponse> updateCategory(
+    String token,
+    int id,
+    Map<String, dynamic> body,
+  ) async {
+    dynamic jsonResponse = await http.patch(
+      url: '$baseUrl/api/categories/$id',
+      body: body,
+      headers: <String, String>{'Authorization': 'Bearer $token'},
+    );
+
+    return UpdateCategoryResponse.fromJson(jsonResponse);
+  }
+
   Future<DeleteCategoryResponse> deleteCategory(String token, int id) async {
     dynamic jsonResponse = await http.delete(
       url: '$baseUrl/api/categories/$id',

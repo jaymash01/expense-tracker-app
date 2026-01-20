@@ -43,6 +43,20 @@ class ExpensesRepository {
     return ExpenseDetailsResponse.fromJson(jsonResponse);
   }
 
+  Future<UpdateExpenseResponse> updateExpense(
+    String token,
+    int id,
+    Map<String, dynamic> body,
+  ) async {
+    dynamic jsonResponse = await http.patch(
+      url: '$baseUrl/api/expenses/$id',
+      body: body,
+      headers: <String, String>{'Authorization': 'Bearer $token'},
+    );
+
+    return UpdateExpenseResponse.fromJson(jsonResponse);
+  }
+
   Future<DeleteExpenseResponse> deleteExpense(String token, int id) async {
     dynamic jsonResponse = await http.delete(
       url: '$baseUrl/api/expenses/$id',

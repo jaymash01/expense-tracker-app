@@ -28,7 +28,7 @@ class AppDropdown extends StatelessWidget {
         color: Theme.of(context).inputDecorationTheme.fillColor,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         border: isDarkMode
-            ? Border.all(color: context.colorScheme.outline, width: 1.0)
+            ? Border.all(color: context.colorScheme.outline, width: 0.5)
             : null,
       ),
       child: DropdownButtonHideUnderline(
@@ -43,7 +43,7 @@ class AppDropdown extends StatelessWidget {
                   ),
                 )
               : null,
-          icon: Icon(Icons.arrow_drop_down_rounded),
+          icon: Icon(Icons.arrow_drop_down),
           items: items
               .map(
                 (item) => DropdownMenuItem(

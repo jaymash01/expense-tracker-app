@@ -29,7 +29,7 @@ class OutlinedCard extends Card {
       surfaceTintColor: surfaceTintColor,
       semanticContainer: semanticContainer,
       shape: RoundedRectangleBorder(
-        side: BorderSide(width: 1.0, color: context.colorScheme.outline),
+        side: BorderSide(width: 0.5, color: context.colorScheme.outline),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: child,

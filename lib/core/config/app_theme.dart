@@ -10,7 +10,7 @@ class AppTheme {
     colorScheme: ColorScheme.light(
       primary: AppColors.light.primary!,
       secondary: AppColors.light.secondary!,
-      surface: Colors.white,
+      surface: AppColors.light.surface!,
       surfaceTint: Colors.transparent,
       error: AppColors.light.danger!,
       onPrimary: Colors.white,
@@ -108,7 +108,8 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         minimumSize: Size.fromHeight(AppDimensions.buttonHeightM),
-        elevation: AppDimensions.elevationNone,
+        elevation: AppDimensions.elevationXS,
+        shadowColor: Colors.black12,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusCircle),
         ),
@@ -135,7 +136,7 @@ class AppTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        borderSide: BorderSide(width: 1.0, color: AppColors.light.secondary!),
+        borderSide: BorderSide(width: 0.5, color: AppColors.light.secondary!),
       ),
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
@@ -153,7 +154,7 @@ class AppTheme {
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       shadowColor: Colors.black12,
-      elevation: AppDimensions.elevationL,
+      elevation: AppDimensions.elevationXS,
       margin: EdgeInsets.zero,
     ),
     radioTheme: RadioThemeData(
@@ -182,7 +183,7 @@ class AppTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.light.surface!,
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Colors.transparent,
@@ -193,7 +194,7 @@ class AppTheme {
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
     ),
-    dividerTheme: DividerThemeData(color: Colors.black12, thickness: 1.0),
+    dividerTheme: DividerThemeData(color: Colors.black12, thickness: 0.5),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       color: AppColors.light.primary,
       linearTrackColor: AppColors.light.primary!.withAlpha(38),
@@ -207,7 +208,7 @@ class AppTheme {
     colorScheme: ColorScheme.light(
       primary: AppColors.dark.primary!,
       secondary: AppColors.dark.secondary!,
-      surface: AppColors.dark.background!,
+      surface: AppColors.dark.surface!,
       surfaceTint: Colors.transparent,
       error: AppColors.dark.danger!,
       onPrimary: Colors.white,
@@ -259,7 +260,7 @@ class AppTheme {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: AppDimensions.elevationNone,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: AppColors.dark.background,
+      backgroundColor: AppColors.dark.surface!,
       unselectedItemColor: Colors.white,
       selectedItemColor: AppColors.light.secondary,
       selectedLabelStyle: AppTextStyles.bodySmall,
@@ -268,7 +269,7 @@ class AppTheme {
     navigationBarTheme: NavigationBarThemeData(
       elevation: AppDimensions.elevationL,
       height: 76,
-      backgroundColor: AppColors.dark.background,
+      backgroundColor: AppColors.dark.surface!,
       indicatorColor: AppColors.dark.secondary!.withAlpha(45),
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((
@@ -305,7 +306,8 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         minimumSize: Size.fromHeight(AppDimensions.buttonHeightM),
-        elevation: AppDimensions.elevationNone,
+        elevation: AppDimensions.elevationXS,
+        shadowColor: Colors.black87,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusCircle),
         ),
@@ -324,15 +326,15 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        borderSide: BorderSide(width: 1.0, color: Colors.white12),
+        borderSide: BorderSide(width: 0.5, color: Colors.white12),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        borderSide: BorderSide(width: 1.0, color: Colors.white12),
+        borderSide: BorderSide(width: 0.5, color: Colors.white12),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        borderSide: BorderSide(width: 1.0, color: AppColors.light.secondary!),
+        borderSide: BorderSide(width: 0.5, color: AppColors.light.secondary!),
       ),
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
@@ -350,7 +352,7 @@ class AppTheme {
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       shadowColor: Colors.black87,
-      elevation: AppDimensions.elevationL,
+      elevation: AppDimensions.elevationXS,
       margin: EdgeInsets.zero,
     ),
     radioTheme: RadioThemeData(
@@ -379,7 +381,7 @@ class AppTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
-      backgroundColor: AppColors.dark.background,
+      backgroundColor: AppColors.dark.surface!,
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Colors.transparent,
@@ -390,7 +392,7 @@ class AppTheme {
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
     ),
-    dividerTheme: DividerThemeData(color: Colors.white12, thickness: 1.0),
+    dividerTheme: DividerThemeData(color: Colors.white12, thickness: 0.5),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       color: AppColors.dark.primary,
       linearTrackColor: AppColors.dark.primary!.withAlpha(38),

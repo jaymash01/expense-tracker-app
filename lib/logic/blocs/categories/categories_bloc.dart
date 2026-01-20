@@ -13,6 +13,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   CategoriesBloc({required this.authBloc})
     : super(CategoriesState(categories: [])) {
     on<LoadCategories>(_onLoadCategories);
+    on<DeleteCategory>(_onDeleteCategory);
   }
 
   Future<void> _onLoadCategories(
@@ -20,7 +21,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     Emitter<CategoriesState> emit,
   ) async {
     try {
-      emit(state.copyWith(isLoading: true, categories: <Category>[]));
+      emit(state.copyWith(isLoading: true));
 
       final token = authBloc.state.token ?? '';
 
@@ -41,6 +42,24 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       emit(state.copyWith(isLoading: false, categories: response.data));
     } catch (e) {
       emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  Future<void> _onDeleteCategory(
+    DeleteCategory event,
+    Emitter<CategoriesState> emit,
+  ) async {
+    try {
+      List<Category> categories = state.categories;
+
+      categories.removeWhere((element) => element.id == event.category.id);
+      emit(state.copyWith(categories: categories));
+
+      final token = authBloc.state.token ?? '';
+
+      await categoriesRepository.deleteCategory(token, event.category.id);
+    } catch (e) {
+      // Ignored
     }
   }
 }

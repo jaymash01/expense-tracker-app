@@ -113,8 +113,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                 },
                                 icon: Icon(
                                   _showPassword
-                                      ? Icons.visibility_rounded
-                                      : Icons.visibility_off_rounded,
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
                               ),
                             ),

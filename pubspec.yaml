@@ -116,3 +116,6 @@ flutter:
           weight: 800
         - asset: assets/fonts/inter/Inter_Black.ttf
           weight: 900
+
+  assets:
+    - assets/images/

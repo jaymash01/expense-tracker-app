@@ -16,14 +16,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditAccountScreen extends StatefulWidget {
-  const EditAccountScreen({super.key});
+class UpdateAccountScreen extends StatefulWidget {
+  const UpdateAccountScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _EditAccountScreenState();
+  State<StatefulWidget> createState() => _UpdateAccountScreenState();
 }
 
-class _EditAccountScreenState extends State<EditAccountScreen> {
+class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
   final AuthRepository _authRepository = AuthRepository();
   final ImagePicker _imagePicker = ImagePicker();
   final TextEditingController _nameTextController = TextEditingController();
@@ -56,12 +56,11 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_rounded),
+          icon: const Icon(Icons.arrow_back),
         ),
         title: Text('Edit Account'),
       ),
       body: ScreenSafeArea(
-        includeTop: true,
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
             horizontal: AppDimensions.spaceM,
@@ -118,9 +117,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     final state = context.read<AuthBloc>().state;
 
     return Center(
-      child: SizedBox(
-        width: 96.0,
-        height: 96.0,
+      child: SizedBox.square(
+        dimension: 96.0,
         child: Stack(
           children: <Widget>[
             Container(
@@ -130,7 +128,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 borderRadius: const BorderRadius.all(Radius.circular(48)),
                 border: Border.all(
                   color: context.colorScheme.outline,
-                  width: 1.0,
+                  width: 0.5,
                 ),
               ),
               child: Center(
@@ -149,7 +147,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 size: 30.0,
                 child: PopupMenuButton<String>(
                   padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.photo_camera_rounded),
+                  icon: const Icon(Icons.photo_camera),
                   iconColor: context.colorScheme.onPrimary,
                   iconSize: 14.0,
                   position: PopupMenuPosition.under,
@@ -165,14 +163,14 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       PopupMenuItem<String>(
                         value: 'Choose Photo',
                         child: PopupMenuItemContent(
-                          icon: Icon(Icons.photo_rounded),
+                          icon: Icon(Icons.photo),
                           label: 'Choose Photo',
                         ),
                       ),
                       PopupMenuItem<String>(
                         value: 'Take Photo',
                         child: PopupMenuItemContent(
-                          icon: Icon(Icons.camera_alt_rounded),
+                          icon: Icon(Icons.camera_alt),
                           label: 'Take Photo',
                         ),
                       ),

@@ -1,8 +1,10 @@
+import 'package:expense_tracker/core/config/app_dimensions.dart';
 import 'package:expense_tracker/core/utils/extensions.dart';
 import 'package:expense_tracker/logic/blocs/home/home_navigation_bloc.dart';
 import 'package:expense_tracker/logic/blocs/home/home_navigation_event.dart';
 import 'package:expense_tracker/logic/blocs/home/home_navigation_state.dart';
 import 'package:expense_tracker/presentation/navigation/app_routes.dart';
+import 'package:expense_tracker/presentation/screens/account/account_screen.dart';
 import 'package:expense_tracker/presentation/screens/home/home_screen.dart';
 import 'package:expense_tracker/presentation/widgets/screen_safe_area.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ class HomeNavigationBar extends StatelessWidget {
       builder: (BuildContext context, HomeNavigationState state) {
         return Scaffold(
           body: ScreenSafeArea(
-            child: <Widget>[HomeScreen(), Column()][state.index],
+            child: <Widget>[HomeScreen(), AccountScreen()][state.index],
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () =>
@@ -25,16 +27,18 @@ class HomeNavigationBar extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
-            child: Icon(Icons.add_rounded),
+            tooltip: 'Create expense',
+            child: Icon(Icons.add),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomAppBar(
+            elevation: AppDimensions.elevationXS,
             shape: CircularNotchedRectangle(),
             notchMargin: 8.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
+              children: <Widget>[
                 IconButton(
                   icon: Icon(
                     Icons.home,
@@ -42,6 +46,7 @@ class HomeNavigationBar extends StatelessWidget {
                         ? context.colorScheme.primary
                         : null,
                   ),
+                  tooltip: 'Home',
                   onPressed: () => context.read<HomeNavigationBloc>().add(
                     HomeNavigationIndexChanged(0),
                   ),
@@ -49,11 +54,12 @@ class HomeNavigationBar extends StatelessWidget {
                 SizedBox(width: 40.0),
                 IconButton(
                   icon: Icon(
-                    Icons.person_rounded,
+                    Icons.person_2,
                     color: state.index == 1
                         ? context.colorScheme.primary
                         : null,
                   ),
+                  tooltip: 'Account',
                   onPressed: () => context.read<HomeNavigationBloc>().add(
                     HomeNavigationIndexChanged(1),
                   ),

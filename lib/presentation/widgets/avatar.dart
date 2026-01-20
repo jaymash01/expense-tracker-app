@@ -12,9 +12,8 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
+    return SizedBox.square(
+      dimension: size,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(256),
         child: Container(

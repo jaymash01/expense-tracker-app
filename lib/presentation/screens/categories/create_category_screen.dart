@@ -1,6 +1,8 @@
 import 'package:expense_tracker/core/config/app_dimensions.dart';
-import 'package:expense_tracker/data/repositories/auth_repository.dart';
+import 'package:expense_tracker/data/repositories/categories_repository.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
+import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
+import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
 import 'package:expense_tracker/presentation/widgets/app_alert.dart';
 import 'package:expense_tracker/presentation/widgets/form_label_control.dart';
 import 'package:expense_tracker/presentation/widgets/loading_button.dart';
@@ -8,18 +10,17 @@ import 'package:expense_tracker/presentation/widgets/screen_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
-  const ChangePasswordScreen({super.key});
+class CreateCategoryScreen extends StatefulWidget {
+  const CreateCategoryScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _ChangePasswordScreenState();
+  State<StatefulWidget> createState() => _CreateCategoryScreenState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final AuthRepository _authRepository = AuthRepository();
+class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
+  final CategoriesRepository _categoriesRepository = CategoriesRepository();
 
   Map<String, dynamic> _formData = <String, dynamic>{};
-  bool _showPassword = false;
   bool _isLoading = false;
 
   @override
@@ -30,7 +31,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text('Change Password'),
+        title: Text('Create Category'),
       ),
       body: ScreenSafeArea(
         child: SingleChildScrollView(
@@ -39,51 +40,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             vertical: AppDimensions.spaceXL,
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               FormLabelControl(
-                label: 'Current Password',
+                label: 'Name',
                 child: TextField(
-                  obscureText: !_showPassword,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _showPassword = !_showPassword;
-                        });
-                      },
-                      icon: Icon(
-                        _showPassword ? Icons.visibility : Icons.visibility_off,
-                      ),
-                    ),
-                  ),
+                  keyboardType: TextInputType.name,
                   onChanged: (String value) {
                     setState(() {
-                      _formData['current_password'] = value;
+                      _formData['name'] = value;
                     });
                   },
                 ),
               ),
               SizedBox(height: AppDimensions.spaceM),
               FormLabelControl(
-                label: 'New Password',
+                label: 'Description (Optional)',
                 child: TextField(
-                  obscureText: !_showPassword,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _showPassword = !_showPassword;
-                        });
-                      },
-                      icon: Icon(
-                        _showPassword ? Icons.visibility : Icons.visibility_off,
-                      ),
-                    ),
-                  ),
+                  keyboardType: TextInputType.multiline,
+                  minLines: 3,
+                  maxLines: 3,
                   onChanged: (String value) {
                     setState(() {
-                      _formData['new_password'] = value;
+                      _formData['description'] = value;
                     });
                   },
                 ),
@@ -106,8 +85,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   bool _validateForm() {
-    if ((_formData['current_password'] ?? '').isEmpty ||
-        (_formData['new_password'] ?? '').isEmpty) {
+    if ((_formData['name'] ?? '').isEmpty) {
       appAlert(
         context,
         'Please fill all the required fields',
@@ -125,11 +103,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     });
 
     try {
-      final token = context.read<AuthBloc>().state.token ?? '';
+      final authBloc = context.read<AuthBloc>();
+      final token = authBloc.state.token ?? '';
       final body = _formData;
 
-      final response = await _authRepository.changePassword(token, body);
-
+      final response = await _categoriesRepository.createCategory(token, body);
       setState(() {
         _isLoading = true;
       });
@@ -142,6 +120,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       );
 
       appAlert(context, response.message, type: AlertType.success);
+      context.read<CategoriesBloc>().add(LoadCategories(null));
+
       Navigator.pop(context);
     } catch (e) {
       appAlert(context, e.toString(), type: AlertType.error);

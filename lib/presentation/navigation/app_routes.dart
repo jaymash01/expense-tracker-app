@@ -5,7 +5,10 @@ class AppRoutes {
   static const home = '/home';
   static const updateAccount = '/update-account';
   static const changePassword = '/change-password';
-  static const createCategory = '/create-expense';
+  static const createCategory = '/create-category';
+  static const categories = '/categories';
+  static const updateCategory = '/category';
   static const createExpense = '/create-expense';
   static const expenses = '/expenses';
+  static const updateExpense = '/update-expense';
 }

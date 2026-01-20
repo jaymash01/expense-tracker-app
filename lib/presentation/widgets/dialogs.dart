@@ -166,7 +166,7 @@ class _AlertDialogChild extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              const Divider(height: 1.0),
+              const Divider(height: 0.5),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: AppDimensions.spaceS),
                 child: TextButton(
@@ -233,7 +233,7 @@ class _ConfirmationDialogChild extends StatelessWidget {
                   ],
                 ),
               ),
-              const Divider(height: 1.0),
+              const Divider(height: 0.5),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: AppDimensions.spaceS),
                 child: IntrinsicHeight(
@@ -287,7 +287,7 @@ class _NetworkImageDialogChild extends StatelessWidget {
         errorBuilder:
             (BuildContext context, Object exception, StackTrace? stackTrace) {
               return Icon(
-                Icons.photo_rounded,
+                Icons.photo,
                 color: context.colorScheme.secondary,
                 size: 72.0,
               );
@@ -330,11 +330,11 @@ class _BottomSheetChild extends StatelessWidget {
                 subtitle: (subtitle ?? '').isNotEmpty ? Text(subtitle!) : null,
                 trailing: GestureDetector(
                   onTap: onDismiss,
-                  child: const Icon(Icons.close_rounded),
+                  child: const Icon(Icons.close),
                 ),
                 minTileHeight: 56.0,
               ),
-            if ((title ?? '').isNotEmpty) const Divider(height: 1.0),
+            if ((title ?? '').isNotEmpty) const Divider(height: 0.5),
             child,
           ],
         ),

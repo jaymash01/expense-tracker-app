@@ -1,4 +1,5 @@
 import 'package:expense_tracker/core/config/app_dimensions.dart';
+import 'package:expense_tracker/core/utils/helpers.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
 import 'package:expense_tracker/presentation/widgets/app_dropdown.dart';
@@ -42,7 +43,9 @@ class _ExpenseFiltersSheetState extends State<ExpenseFiltersSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = context.read<CategoriesBloc>().state.categories;
+    final categories = context.select(
+      (CategoriesBloc bloc) => bloc.state.categories,
+    );
 
     return Padding(
       padding: EdgeInsets.all(AppDimensions.spaceM),
@@ -78,6 +81,10 @@ class _ExpenseFiltersSheetState extends State<ExpenseFiltersSheet> {
                   child: TextField(
                     readOnly: true,
                     controller: _startDateTextController,
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.calendar_month),
+                    ),
+                    onTap: _showStartDatePicker,
                   ),
                 ),
               ),
@@ -88,7 +95,10 @@ class _ExpenseFiltersSheetState extends State<ExpenseFiltersSheet> {
                   child: TextField(
                     readOnly: true,
                     controller: _endDateTextController,
-                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.calendar_month),
+                    ),
+                    onTap: _showEndDatePicker,
                   ),
                 ),
               ),
@@ -121,6 +131,42 @@ class _ExpenseFiltersSheetState extends State<ExpenseFiltersSheet> {
         ],
       ),
     );
+  }
+
+  void _showStartDatePicker() async {
+    DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: (_params['start_date'] ?? '').isNotEmpty
+          ? parseDate(_params['start_date'])
+          : DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+
+    if (selected != null) {
+      setState(() {
+        _params['start_date'] = formatDate(selected, 'yyyy-MM-dd');
+        _startDateTextController.text = _params['start_date'];
+      });
+    }
+  }
+
+  void _showEndDatePicker() async {
+    DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: (_params['end_date'] ?? '').isNotEmpty
+          ? parseDate(_params['end_date'])
+          : DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+
+    if (selected != null) {
+      setState(() {
+        _params['end_date'] = formatDate(selected, 'yyyy-MM-dd');
+        _endDateTextController.text = _params['end_date'];
+      });
+    }
   }
 
   @override

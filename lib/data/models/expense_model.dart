@@ -2,7 +2,7 @@ import 'package:expense_tracker/data/models/category_model.dart';
 
 class Expense {
   int id;
-  Category category;
+  Category? category;
   num amount;
   String? description;
   String expenseDate;
@@ -10,7 +10,7 @@ class Expense {
 
   Expense({
     required this.id,
-    required this.category,
+    this.category,
     required this.amount,
     this.description,
     required this.expenseDate,
@@ -20,8 +20,10 @@ class Expense {
   factory Expense.fromJson(Map<String, dynamic> json) {
     return Expense(
       id: json['id'],
-      category: Category.fromJson(json['category']),
-      amount: json['amount'],
+      category: json['category'] != null
+          ? Category.fromJson(json['category'])
+          : null,
+      amount: num.parse(json['amount'].toString()),
       description: json['description'],
       expenseDate: json['expense_date'],
       createdAt: json['created_at'],
@@ -73,6 +75,20 @@ class ExpenseDetailsResponse {
 
   factory ExpenseDetailsResponse.fromJson(Map<String, dynamic> json) {
     return ExpenseDetailsResponse(
+      message: json['message'],
+      data: json['data'] != null ? Expense.fromJson(json['data']) : null,
+    );
+  }
+}
+
+class UpdateExpenseResponse {
+  String message;
+  Expense? data;
+
+  UpdateExpenseResponse({required this.message, this.data});
+
+  factory UpdateExpenseResponse.fromJson(Map<String, dynamic> json) {
+    return UpdateExpenseResponse(
       message: json['message'],
       data: json['data'] != null ? Expense.fromJson(json['data']) : null,
     );

@@ -14,6 +14,7 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
   ExpensesBloc({required this.authBloc}) : super(ExpensesState(expenses: [])) {
     on<LoadExpenses>(_onLoadExpenses);
     on<LoadMoreExpenses>(_onLoadMoreExpenses);
+    on<DeleteExpense>(_onDeleteExpense);
   }
 
   Future<void> _onLoadExpenses(
@@ -83,19 +84,37 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
         token,
         params,
       );
-      List<Expense> purchases = state.expenses;
-      purchases.addAll(response.data);
+      List<Expense> expenses = state.expenses;
+      expenses.addAll(response.data);
 
       emit(
         state.copyWith(
           isLoading: false,
           currentPage: response.page,
           isLastPage: response.data.length < pageSize,
-          expenses: purchases,
+          expenses: expenses,
         ),
       );
     } catch (e) {
       emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  Future<void> _onDeleteExpense(
+    DeleteExpense event,
+    Emitter<ExpensesState> emit,
+  ) async {
+    try {
+      List<Expense> expenses = state.expenses;
+
+      expenses.removeWhere((element) => element.id == event.expense.id);
+      emit(state.copyWith(expenses: expenses));
+
+      final token = authBloc.state.token ?? '';
+
+      await expensesRepository.deleteExpense(token, event.expense.id);
+    } catch (e) {
+      // Ignored
     }
   }
 }

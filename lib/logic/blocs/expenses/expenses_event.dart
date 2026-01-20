@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:expense_tracker/data/models/expense_model.dart';
 
 class ExpensesEvent extends Equatable {
   const ExpensesEvent();
@@ -23,4 +24,13 @@ class LoadMoreExpenses extends ExpensesEvent {
 
   @override
   List<Object?> get props => [params];
+}
+
+class DeleteExpense extends ExpensesEvent {
+  final Expense expense;
+
+  const DeleteExpense(this.expense);
+
+  @override
+  List<Object?> get props => [expense];
 }

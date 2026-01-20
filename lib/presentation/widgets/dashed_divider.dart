@@ -14,7 +14,7 @@ class DashedDivider extends StatelessWidget {
     super.key,
     this.color,
     this.height = 16.0,
-    this.thickness =  1.0,
+    this.thickness = 1.0,
     this.dashLength = 5.0,
     this.dashSpacing = 3.0,
     this.indent = 0.0,

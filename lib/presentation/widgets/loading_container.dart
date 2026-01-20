@@ -18,18 +18,12 @@ class LoadingContainer extends StatelessWidget {
     return Stack(
       children: <Widget>[
         if (loading)
-          SizedBox(
-            width: size,
-            height: size,
-            child: CircularProgressIndicator(),
-          ),
-        SizedBox(
-          width: size,
-          height: size,
+          SizedBox.square(dimension: size, child: CircularProgressIndicator()),
+        SizedBox.square(
+          dimension: size,
           child: Center(
-            child: SizedBox(
-              width: size - 6,
-              height: size - 6,
+            child: SizedBox.square(
+              dimension: size - 6,
               child: Card(
                 elevation: 0,
                 clipBehavior: Clip.hardEdge,

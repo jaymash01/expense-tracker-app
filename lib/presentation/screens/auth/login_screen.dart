@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               keyboardType: TextInputType.emailAddress,
                               decoration: const InputDecoration(
                                 hintText: 'Email',
-                                prefixIcon: Icon(Icons.alternate_email_rounded),
+                                prefixIcon: Icon(Icons.alternate_email),
                               ),
                               onChanged: (String value) {
                                 BlocProvider.of<LoginBloc>(
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               obscureText: !_showPassword,
                               decoration: InputDecoration(
                                 hintText: 'Password',
-                                prefixIcon: const Icon(Icons.lock_rounded),
+                                prefixIcon: const Icon(Icons.lock),
                                 suffixIcon: IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -102,8 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                   icon: Icon(
                                     _showPassword
-                                        ? Icons.visibility_rounded
-                                        : Icons.visibility_off_rounded,
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                   ),
                                 ),
                               ),
@@ -123,31 +123,30 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               },
                             ),
+                            SizedBox(height: AppDimensions.spaceXL),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                const Text("Don't have an account? "),
+                                GestureDetector(
+                                  onTap: () => Navigator.pushReplacementNamed(
+                                    context,
+                                    AppRoutes.createAccount,
+                                  ),
+                                  child: Text(
+                                    'Sign up',
+                                    style: context.textTheme.titleSmall!
+                                        .copyWith(
+                                          color: context.colorScheme.primary,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    const Divider(),
-                    SizedBox(height: AppDimensions.spaceS),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text("Don't have an account? "),
-                        GestureDetector(
-                          onTap: () => Navigator.pushReplacementNamed(
-                            context,
-                            AppRoutes.createAccount,
-                          ),
-                          child: Text(
-                            'Sign up',
-                            style: context.textTheme.titleSmall!.copyWith(
-                              color: context.colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: AppDimensions.spaceM),
                   ],
                 ),
               ),

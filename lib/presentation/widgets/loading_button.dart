@@ -80,9 +80,8 @@ class _LoadingButtonChild extends StatelessWidget {
 
     final indicator =
         loadingIndicator ??
-        SizedBox(
-          width: size,
-          height: size,
+        SizedBox.square(
+          dimension: size,
           child: CircularProgressIndicator(
             strokeWidth: 2.5,
             color: context.colorScheme.onPrimary,
