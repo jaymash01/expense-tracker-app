@@ -1,5 +1,6 @@
 import 'package:expense_tracker/core/config/app_dimensions.dart';
 import 'package:expense_tracker/core/utils/comma_text_input_formatter.dart';
+import 'package:expense_tracker/core/utils/extensions.dart';
 import 'package:expense_tracker/core/utils/helpers.dart';
 import 'package:expense_tracker/data/repositories/expenses_repository.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_bloc.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_event.dart';
+import 'package:expense_tracker/presentation/navigation/app_routes.dart';
 import 'package:expense_tracker/presentation/widgets/app_alert.dart';
 import 'package:expense_tracker/presentation/widgets/app_dropdown.dart';
 import 'package:expense_tracker/presentation/widgets/form_label_control.dart';
@@ -70,6 +72,19 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
                 child: AppDropdown(
                   value: _formData['category_id'],
                   hint: 'Select category',
+                  suffixIcon: SizedBox.square(
+                    dimension: 32.0,
+                    child: IconButton(
+                      onPressed: () => Navigator.pushNamed(
+                        context,
+                        AppRoutes.createCategory,
+                      ),
+                      color: context.colorScheme.primary,
+                      icon: Icon(Icons.add_circle),
+                      iconSize: AppDimensions.iconSizeXS,
+                      tooltip: 'Create category',
+                    ),
+                  ),
                   items: categories
                       .map(
                         (element) => <String, String>{

@@ -21,54 +21,79 @@ class HomeNavigationBar extends StatelessWidget {
           body: ScreenSafeArea(
             child: <Widget>[HomeScreen(), AccountScreen()][state.index],
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () =>
-                Navigator.pushNamed(context, AppRoutes.createExpense),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            tooltip: 'Create expense',
-            child: Icon(Icons.add),
-          ),
+          floatingActionButton: _buildFloatingActionButton(context),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomAppBar(
-            elevation: AppDimensions.elevationXS,
-            shape: CircularNotchedRectangle(),
-            notchMargin: 8.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.home,
-                    color: state.index == 0
-                        ? context.colorScheme.primary
-                        : null,
-                  ),
-                  tooltip: 'Home',
-                  onPressed: () => context.read<HomeNavigationBloc>().add(
-                    HomeNavigationIndexChanged(0),
-                  ),
-                ),
-                SizedBox(width: 40.0),
-                IconButton(
-                  icon: Icon(
-                    Icons.person_2,
-                    color: state.index == 1
-                        ? context.colorScheme.primary
-                        : null,
-                  ),
-                  tooltip: 'Account',
-                  onPressed: () => context.read<HomeNavigationBloc>().add(
-                    HomeNavigationIndexChanged(1),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          bottomNavigationBar: _buildNavigationBar(context, state),
         );
       },
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return SizedBox.square(
+      dimension: 60.0,
+      child: Tooltip(
+        message: 'Create expense',
+        child: Card(
+          clipBehavior: Clip.hardEdge,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: InkWell(
+            onTap: () => Navigator.pushNamed(context, AppRoutes.createExpense),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    context.colorScheme.primary,
+                    context.colorScheme.primary.withAlpha(200),
+                  ],
+                  begin: AlignmentGeometry.topCenter,
+                  end: AlignmentGeometry.bottomCenter,
+                ),
+              ),
+              child: Center(
+                child: Icon(Icons.add, color: context.colorScheme.onPrimary),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavigationBar(BuildContext context, HomeNavigationState state) {
+    return BottomAppBar(
+      elevation: AppDimensions.elevationXS,
+      shape: CircularNotchedRectangle(),
+      notchMargin: AppDimensions.spaceS,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.home,
+              color: state.index == 0 ? context.colorScheme.primary : null,
+            ),
+            tooltip: 'Home',
+            onPressed: () => context.read<HomeNavigationBloc>().add(
+              HomeNavigationIndexChanged(0),
+            ),
+          ),
+          SizedBox(width: 40.0),
+          IconButton(
+            icon: Icon(
+              Icons.person_2,
+              color: state.index == 1 ? context.colorScheme.primary : null,
+            ),
+            tooltip: 'Account',
+            onPressed: () => context.read<HomeNavigationBloc>().add(
+              HomeNavigationIndexChanged(1),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

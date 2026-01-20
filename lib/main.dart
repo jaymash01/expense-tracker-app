@@ -2,6 +2,7 @@ import 'package:expense_tracker/core/config/styles/app_system_ui_overlay_style.d
 import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_event.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_bloc.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_bloc.dart';
 import 'package:expense_tracker/logic/blocs/home/home_navigation_bloc.dart';
 import 'package:expense_tracker/logic/blocs/theme/theme_bloc.dart';
@@ -33,6 +34,10 @@ void main() async {
         ),
         BlocProvider<HomeNavigationBloc>(
           create: (BuildContext context) => HomeNavigationBloc(),
+        ),
+        BlocProvider<DashboardBloc>(
+          create: (BuildContext context) =>
+              DashboardBloc(authBloc: context.read<AuthBloc>()),
         ),
         BlocProvider<CategoriesBloc>(
           create: (BuildContext context) =>

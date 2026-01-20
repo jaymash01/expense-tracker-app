@@ -9,6 +9,7 @@ class AppDropdown extends StatelessWidget {
   final List<Map<String, String>> items;
   final Function(String?) onChanged;
   final String? hint;
+  final Widget? suffixIcon;
 
   const AppDropdown({
     super.key,
@@ -16,6 +17,7 @@ class AppDropdown extends StatelessWidget {
     required this.items,
     required this.onChanged,
     this.hint,
+    this.suffixIcon,
   });
 
   @override
@@ -43,7 +45,12 @@ class AppDropdown extends StatelessWidget {
                   ),
                 )
               : null,
-          icon: Icon(Icons.arrow_drop_down),
+          icon: Row(
+            children: <Widget>[
+              if (suffixIcon != null) suffixIcon!,
+              Icon(Icons.arrow_drop_down),
+            ],
+          ),
           items: items
               .map(
                 (item) => DropdownMenuItem(

@@ -40,8 +40,8 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
     final user = context.read<AuthBloc>().state.user;
 
     if (user != null) {
-      _nameTextController.text = user.name ?? '';
-      _emailTextController.text = user.email ?? '';
+      _nameTextController.text = user.name;
+      _emailTextController.text = user.email!;
 
       setState(() {
         _formData['name'] = user.name;

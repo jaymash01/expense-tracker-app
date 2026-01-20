@@ -5,20 +5,21 @@ import 'package:flutter/material.dart';
 class EmptyPlaceholder extends StatelessWidget {
   final String title;
   final String? description;
+  final Widget? action;
   final double height;
 
   const EmptyPlaceholder({
     super.key,
     this.title = 'No data yet',
     this.description,
+    this.action,
     this.height = 500.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: height,
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: height),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -37,6 +38,8 @@ class EmptyPlaceholder extends StatelessWidget {
           if (description != null) SizedBox(height: AppDimensions.spaceXXS),
           if (description != null)
             Text(description!, style: context.textTheme.bodySmall),
+          if (action != null) SizedBox(height: AppDimensions.spaceM),
+          if (action != null) action!,
         ],
       ),
     );
