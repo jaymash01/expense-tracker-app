@@ -36,6 +36,7 @@ class HomeNavigationBar extends StatelessWidget {
       child: Tooltip(
         message: 'Create expense',
         child: Card(
+          elevation: AppDimensions.elevationM,
           clipBehavior: Clip.hardEdge,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),

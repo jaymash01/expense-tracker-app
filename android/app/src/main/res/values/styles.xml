@@ -10,6 +10,11 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:navigationBarColor">@color/background</item>
+
+        <!-- Android 12+ splash screen -->
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/background</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/ic_launcher</item>
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="s">@android:color/transparent</item>
     </style>
     <!-- Theme applied to the Android Window as soon as the process has started.
          This theme determines the color of the Android Window while your
