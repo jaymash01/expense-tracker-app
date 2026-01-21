@@ -113,10 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
             action: SizedBox(
               width: 160.0,
               child: ElevatedButton(
-                onPressed: () => Navigator.pushReplacementNamed(
-                  context,
-                  AppRoutes.createExpense,
-                ),
+                onPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.createExpense),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
