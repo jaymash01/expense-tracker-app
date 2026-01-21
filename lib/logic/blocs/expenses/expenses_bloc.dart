@@ -113,6 +113,10 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
       final token = authBloc.state.token ?? '';
 
       await expensesRepository.deleteExpense(token, event.expense.id);
+
+      if (event.onSuccess != null) {
+        event.onSuccess!();
+      }
     } catch (e) {
       // Ignored
     }

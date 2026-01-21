@@ -4,6 +4,10 @@ import 'package:expense_tracker/data/repositories/categories_repository.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_bloc.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_event.dart';
+import 'package:expense_tracker/logic/blocs/expenses/expenses_bloc.dart';
+import 'package:expense_tracker/logic/blocs/expenses/expenses_event.dart';
 import 'package:expense_tracker/presentation/widgets/app_alert.dart';
 import 'package:expense_tracker/presentation/widgets/form_label_control.dart';
 import 'package:expense_tracker/presentation/widgets/loading_button.dart';
@@ -147,6 +151,8 @@ class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
 
       appAlert(context, response.message, type: AlertType.success);
       context.read<CategoriesBloc>().add(LoadCategories(null));
+      context.read<ExpensesBloc>().add(LoadExpenses(null));
+      context.read<DashboardBloc>().add(LoadDashboard());
 
       Navigator.pop(context);
     } catch (e) {

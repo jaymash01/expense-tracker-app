@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:equatable/equatable.dart';
 import 'package:expense_tracker/data/models/category_model.dart';
 
@@ -19,9 +21,10 @@ class LoadCategories extends CategoriesEvent {
 
 class DeleteCategory extends CategoriesEvent {
   final Category category;
+  final VoidCallback? onSuccess;
 
-  const DeleteCategory(this.category);
+  const DeleteCategory(this.category, this.onSuccess);
 
   @override
-  List<Object?> get props => [category];
+  List<Object?> get props => [category, onSuccess];
 }

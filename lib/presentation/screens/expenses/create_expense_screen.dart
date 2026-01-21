@@ -6,6 +6,8 @@ import 'package:expense_tracker/data/repositories/expenses_repository.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_bloc.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_event.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_bloc.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_event.dart';
 import 'package:expense_tracker/presentation/navigation/app_routes.dart';
@@ -217,6 +219,7 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
 
       appAlert(context, response.message, type: AlertType.success);
       context.read<ExpensesBloc>().add(LoadExpenses(null));
+      context.read<DashboardBloc>().add(LoadDashboard());
 
       Navigator.pop(context);
     } catch (e) {

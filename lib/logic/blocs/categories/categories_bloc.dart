@@ -58,6 +58,10 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       final token = authBloc.state.token ?? '';
 
       await categoriesRepository.deleteCategory(token, event.category.id);
+
+      if (event.onSuccess != null) {
+        event.onSuccess!();
+      }
     } catch (e) {
       // Ignored
     }

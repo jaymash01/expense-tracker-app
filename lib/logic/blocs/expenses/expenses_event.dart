@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:equatable/equatable.dart';
 import 'package:expense_tracker/data/models/expense_model.dart';
 
@@ -28,9 +30,10 @@ class LoadMoreExpenses extends ExpensesEvent {
 
 class DeleteExpense extends ExpensesEvent {
   final Expense expense;
+  final VoidCallback? onSuccess;
 
-  const DeleteExpense(this.expense);
+  const DeleteExpense(this.expense, this.onSuccess);
 
   @override
-  List<Object?> get props => [expense];
+  List<Object?> get props => [expense, onSuccess];
 }

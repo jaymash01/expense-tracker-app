@@ -2,6 +2,8 @@ import 'package:expense_tracker/core/config/app_dimensions.dart';
 import 'package:expense_tracker/core/utils/extensions.dart';
 import 'package:expense_tracker/core/utils/helpers.dart';
 import 'package:expense_tracker/data/models/expense_model.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_bloc.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_event.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_bloc.dart';
 import 'package:expense_tracker/logic/blocs/expenses/expenses_event.dart';
 import 'package:expense_tracker/logic/blocs/theme/theme_bloc.dart';
@@ -129,7 +131,12 @@ class ExpenseCard extends StatelessWidget {
       'Are you sure you want to delete this expense?',
       () {
         Navigator.pop(context);
-        context.read<ExpensesBloc>().add(DeleteExpense(expense));
+        context.read<ExpensesBloc>().add(
+          DeleteExpense(expense, () {
+            context.read<ExpensesBloc>().add(LoadExpenses(null));
+            context.read<DashboardBloc>().add(LoadDashboard());
+          }),
+        );
       },
     );
   }

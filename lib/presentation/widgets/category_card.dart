@@ -3,6 +3,10 @@ import 'package:expense_tracker/core/utils/extensions.dart';
 import 'package:expense_tracker/data/models/category_model.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_bloc.dart';
+import 'package:expense_tracker/logic/blocs/dashboard/dashboard_event.dart';
+import 'package:expense_tracker/logic/blocs/expenses/expenses_bloc.dart';
+import 'package:expense_tracker/logic/blocs/expenses/expenses_event.dart';
 import 'package:expense_tracker/presentation/navigation/app_routes.dart';
 import 'package:expense_tracker/presentation/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +97,12 @@ class CategoryCard extends StatelessWidget {
       'Are you sure you want to delete this category?',
       () {
         Navigator.pop(context);
-        context.read<CategoriesBloc>().add(DeleteCategory(category));
+        context.read<CategoriesBloc>().add(
+          DeleteCategory(category, () {
+            context.read<ExpensesBloc>().add(LoadExpenses(null));
+            context.read<DashboardBloc>().add(LoadDashboard());
+          }),
+        );
       },
     );
   }
