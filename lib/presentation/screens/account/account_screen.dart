@@ -53,6 +53,7 @@ class AccountScreen extends StatelessWidget {
                         _buildAppearanceActionsCard(context),
                         SizedBox(height: AppDimensions.spaceL),
                         _buildLogoutButton(context),
+                        SizedBox(height: 96.0),
                       ],
                     ),
                   )

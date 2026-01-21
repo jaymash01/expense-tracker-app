@@ -13,6 +13,6 @@ class LoadingIndicator extends StatelessWidget {
             padding: EdgeInsets.all(AppDimensions.spaceM),
             child: Center(child: CircularProgressIndicator()),
           )
-        : const SizedBox.shrink();
+        : SizedBox.shrink();
   }
 }

@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         _buildHeader(state),
                         SizedBox(height: AppDimensions.spaceL),
                         _buildDashboard(),
-                        const SizedBox(height: 96.0),
+                        SizedBox(height: 96.0),
                       ],
                     )
                   : null,

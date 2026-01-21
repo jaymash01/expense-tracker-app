@@ -153,7 +153,7 @@ class _AppAlertState extends State<AppAlert>
                         color: widget.textColor,
                         size: AppDimensions.iconSizeS,
                       ),
-                      const SizedBox(width: AppDimensions.spaceS),
+                      SizedBox(width: AppDimensions.spaceS),
                     ],
                     Flexible(
                       child: Text(
@@ -166,7 +166,7 @@ class _AppAlertState extends State<AppAlert>
                     ),
                     if (widget.actionLabel != null &&
                         widget.onActionPressed != null) ...[
-                      const SizedBox(width: AppDimensions.spaceS),
+                      SizedBox(width: AppDimensions.spaceS),
                       TextButton(
                         onPressed: widget.onActionPressed,
                         style: TextButton.styleFrom(

@@ -276,7 +276,7 @@ class _AnimatedProgressStepperState extends State<AnimatedProgressStepper> {
               ),
             ),
             if (index < widget.totalSteps - 1)
-              const SizedBox(width: AppDimensions.spaceXS),
+              SizedBox(width: AppDimensions.spaceXS),
           ],
         );
       }),
