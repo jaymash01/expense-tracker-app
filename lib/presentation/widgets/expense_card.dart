@@ -132,10 +132,10 @@ class ExpenseCard extends StatelessWidget {
       () {
         Navigator.pop(context);
         context.read<ExpensesBloc>().add(
-          DeleteExpense(expense, () {
-            context.read<ExpensesBloc>().add(LoadExpenses(null));
-            context.read<DashboardBloc>().add(LoadDashboard());
-          }),
+          DeleteExpense(
+            expense,
+            () => context.read<DashboardBloc>().add(LoadDashboard()),
+          ),
         );
       },
     );
