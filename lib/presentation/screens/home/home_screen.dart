@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: SingleChildScrollView(
               padding: EdgeInsets.all(AppDimensions.spaceM),
+              physics: const AlwaysScrollableScrollPhysics(),
               child: state.user != null
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -177,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Icon(Icons.calendar_month, size: AppDimensions.iconSizeXS),
+                  Icon(Icons.wallet, size: AppDimensions.iconSizeS),
                   SizedBox(width: AppDimensions.spaceS),
                   Text(
                     'Total Expenses',

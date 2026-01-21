@@ -37,31 +37,44 @@ class ExpenseCard extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
+                SizedBox.square(
+                  dimension: 40.0,
+                  child: Card(
+                    color: context.colorScheme.primary,
+                    child: Center(
+                      child: Text(
+                        expense.category!.name[0],
+                        style: TextStyle(
+                          color: context.colorScheme.onPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: AppDimensions.spaceM),
                 Expanded(
-                  child: Text(
-                    'TZS ${numberFormat(expense.amount)}',
-                    style: isDarkMode
-                        ? context.textTheme.titleMedium
-                        : context.textTheme.titleMedium!.copyWith(
-                            color: context.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'TZS ${numberFormat(expense.amount)}',
+                        style: context.textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(width: AppDimensions.spaceS),
+                      Text(
+                        expense.category!.name,
+                        style: context.textTheme.bodySmall,
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: AppDimensions.spaceM),
                 Text(
                   niceDate(expense.expenseDate),
-                  style: context.textTheme.bodySmall,
-                ),
-              ],
-            ),
-            SizedBox(height: AppDimensions.spaceS),
-            Row(
-              children: <Widget>[
-                Icon(Icons.folder, size: AppDimensions.iconSizeXS),
-                SizedBox(width: AppDimensions.spaceS),
-                Text(
-                  expense.category!.name,
                   style: context.textTheme.bodySmall,
                 ),
               ],
