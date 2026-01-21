@@ -69,6 +69,7 @@ class HomeNavigationBar extends StatelessWidget {
       elevation: AppDimensions.elevationXS,
       shape: CircularNotchedRectangle(),
       notchMargin: AppDimensions.spaceS,
+      height: 60.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
