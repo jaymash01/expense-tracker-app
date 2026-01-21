@@ -15,6 +15,7 @@ import 'package:expense_tracker/presentation/widgets/expense_card.dart';
 import 'package:expense_tracker/presentation/widgets/screen_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,6 +26,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _showInsights = false;
+
   @override
   void initState() {
     super.initState();
@@ -135,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if ((state.data!.summary.aiInsights ?? '').isNotEmpty)
               SizedBox(height: AppDimensions.spaceL),
             if ((state.data!.summary.aiInsights ?? '').isNotEmpty)
-              _buildAiInsights(state),
+              _buildInsights(state),
             SizedBox(height: AppDimensions.spaceL),
             _buildRecentExpensesList(state),
           ],
@@ -216,35 +219,63 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildAiInsights(DashboardState state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Text(
-          '✨ AI Insights',
-          style: context.textTheme.titleSmall!.copyWith(
-            color: context.textTheme.bodySmall!.color,
-          ),
-        ),
-        SizedBox(height: AppDimensions.spaceS),
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimensions.spaceS,
-            vertical: AppDimensions.spaceXS,
-          ),
-          decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(color: context.colorScheme.outline, width: 3.0),
+  Widget _buildInsights(DashboardState state) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(AppDimensions.spaceM),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _showInsights = !_showInsights;
+                });
+              },
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      '✨ AI Insights',
+                      style: context.textTheme.titleSmall!.copyWith(
+                        color: context.textTheme.bodySmall!.color,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    _showInsights
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                  ),
+                ],
+              ),
             ),
-          ),
-          child: Text(
-            state.data!.summary.aiInsights!,
-            style: context.textTheme.bodySmall!.copyWith(
-              fontStyle: FontStyle.italic,
-            ),
-          ),
+            if (_showInsights) SizedBox(height: AppDimensions.spaceS),
+            if (_showInsights)
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppDimensions.spaceS,
+                  vertical: AppDimensions.spaceXS,
+                ),
+                decoration: BoxDecoration(
+                  border: Border(
+                    left: BorderSide(
+                      color: context.colorScheme.outline,
+                      width: 3.0,
+                    ),
+                  ),
+                ),
+                child: MarkdownBody(
+                  data: state.data!.summary.aiInsights!,
+                  selectable: true,
+                  styleSheet: MarkdownStyleSheet(
+                    p: context.textTheme.bodySmall!.copyWith(fontSize: 12),
+                  ),
+                ),
+              ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -258,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             Expanded(
               child: Text(
-                '🕜 Recent Expenses',
+                'Recent Expenses',
                 style: context.textTheme.titleSmall!.copyWith(
                   color: context.textTheme.bodySmall!.color,
                 ),
@@ -266,13 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () => Navigator.pushNamed(context, AppRoutes.expenses),
-              child: Row(
-                children: <Widget>[
-                  Text('View all', style: context.textTheme.bodySmall),
-                  SizedBox(width: AppDimensions.spaceS),
-                  Icon(Icons.arrow_forward, size: AppDimensions.iconSizeXS),
-                ],
-              ),
+              child: Text('View all', style: context.textTheme.bodySmall),
             ),
           ],
         ),
