@@ -1,4 +1,5 @@
 import 'package:expense_tracker/core/config/app_dimensions.dart';
+import 'package:expense_tracker/core/config/app_theme.dart';
 import 'package:expense_tracker/core/utils/extensions.dart';
 import 'package:expense_tracker/logic/blocs/home/home_navigation_bloc.dart';
 import 'package:expense_tracker/logic/blocs/home/home_navigation_event.dart';
@@ -35,27 +36,31 @@ class HomeNavigationBar extends StatelessWidget {
       dimension: 60.0,
       child: Tooltip(
         message: 'Create expense',
-        child: Card(
-          elevation: AppDimensions.elevationM,
-          clipBehavior: Clip.hardEdge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          child: InkWell(
-            onTap: () => Navigator.pushNamed(context, AppRoutes.createExpense),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: <Color>[
-                    context.colorScheme.primary,
-                    context.colorScheme.primary.withAlpha(200),
-                  ],
-                  begin: AlignmentGeometry.topCenter,
-                  end: AlignmentGeometry.bottomCenter,
+        child: Theme(
+          data: AppTheme.dark,
+          child: Card(
+            elevation: AppDimensions.elevationM,
+            clipBehavior: Clip.hardEdge,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            child: InkWell(
+              onTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.createExpense),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      context.colorScheme.primary,
+                      context.colorScheme.primary.withAlpha(200),
+                    ],
+                    begin: AlignmentGeometry.topCenter,
+                    end: AlignmentGeometry.bottomCenter,
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Icon(Icons.add, color: context.colorScheme.onPrimary),
+                child: Center(
+                  child: Icon(Icons.add, color: context.colorScheme.onPrimary),
+                ),
               ),
             ),
           ),
@@ -65,36 +70,53 @@ class HomeNavigationBar extends StatelessWidget {
   }
 
   Widget _buildNavigationBar(BuildContext context, HomeNavigationState state) {
-    return BottomAppBar(
-      elevation: AppDimensions.elevationXS,
-      shape: CircularNotchedRectangle(),
-      notchMargin: AppDimensions.spaceS,
-      height: 60.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.home,
-              color: state.index == 0 ? context.colorScheme.primary : null,
-            ),
-            tooltip: 'Home',
-            onPressed: () => context.read<HomeNavigationBloc>().add(
-              HomeNavigationIndexChanged(0),
-            ),
-          ),
-          SizedBox(width: 40.0),
-          IconButton(
-            icon: Icon(
-              Icons.person_2,
-              color: state.index == 1 ? context.colorScheme.primary : null,
-            ),
-            tooltip: 'Account',
-            onPressed: () => context.read<HomeNavigationBloc>().add(
-              HomeNavigationIndexChanged(1),
-            ),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(30.0),
+          topLeft: Radius.circular(30.0),
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: Colors.black12, spreadRadius: 0.0, blurRadius: 10.0),
         ],
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+        child: BottomAppBar(
+          elevation: AppDimensions.elevationNone,
+          shape: CircularNotchedRectangle(),
+          notchMargin: AppDimensions.spaceS,
+          height: 60.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.home,
+                  color: state.index == 0 ? context.colorScheme.primary : null,
+                ),
+                tooltip: 'Home',
+                onPressed: () => context.read<HomeNavigationBloc>().add(
+                  HomeNavigationIndexChanged(0),
+                ),
+              ),
+              SizedBox(width: 40.0),
+              IconButton(
+                icon: Icon(
+                  Icons.person_2,
+                  color: state.index == 1 ? context.colorScheme.primary : null,
+                ),
+                tooltip: 'Account',
+                onPressed: () => context.read<HomeNavigationBloc>().add(
+                  HomeNavigationIndexChanged(1),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
