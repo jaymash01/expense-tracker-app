@@ -1,4 +1,3 @@
-import 'package:expense_tracker/core/config/styles/app_system_ui_overlay_style.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_event.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
@@ -54,11 +53,6 @@ void main() async {
       child: const MyApp(),
     ),
   );
-
-  SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.manual,
-    overlays: SystemUiOverlay.values,
-  );
 }
 
 class MyApp extends StatelessWidget {
@@ -66,14 +60,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ThemeBloc, ThemeState>(
-      listener: (BuildContext context, ThemeState state) {
-        SystemChrome.setSystemUIOverlayStyle(
-          state.isDarkMode
-              ? AppSystemUiOverlayStyle.dark
-              : AppSystemUiOverlayStyle.light,
-        );
-      },
+    return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (BuildContext context, ThemeState state) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -83,6 +70,27 @@ class MyApp extends StatelessWidget {
           themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
           onGenerateRoute: AppRouter.onGenerateRoute,
           initialRoute: AppRoutes.splash,
+          builder: (BuildContext context, Widget? child) {
+            final backgroundColor = state.themeData.scaffoldBackgroundColor;
+
+            // Determine icon brightness based on the theme
+            final iconBrightness =
+                ThemeData.estimateBrightnessForColor(backgroundColor) ==
+                    Brightness.dark
+                ? Brightness.light
+                : Brightness.dark;
+
+            return AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: iconBrightness,
+                systemNavigationBarColor: backgroundColor,
+                systemNavigationBarIconBrightness: iconBrightness,
+                systemNavigationBarContrastEnforced: false,
+              ),
+              child: child!,
+            );
+          },
         );
       },
     );
