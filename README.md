@@ -25,7 +25,7 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/jaymash01/expense-tracker-app.git](https://github.com/jaymash01/expense-tracker-app.git) expense_tracker
+git clone https://github.com/jaymash01/expense-tracker-app.git expense_tracker
 cd expense_tracker
 ```
 
