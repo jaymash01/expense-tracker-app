@@ -15,6 +15,7 @@ import 'package:expense_tracker/presentation/widgets/expense_card.dart';
 import 'package:expense_tracker/presentation/widgets/screen_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         _buildHeader(state),
                         SizedBox(height: AppDimensions.spaceL),
                         _buildDashboard(),
-                        SizedBox(height: 96.0),
+                        const SizedBox(height: 96.0),
                       ],
                     )
                   : null,
@@ -94,6 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildDashboard() {
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (BuildContext context, DashboardState state) {
+        if (state.isLoading) {
+          return _buildShimmer();
+        }
+
         if (state.data == null) {
           return Column();
         }
@@ -152,6 +157,10 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(30.0),
         ),
         child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimensions.spaceXL,
+            vertical: AppDimensions.spaceL,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: <Color>[
@@ -162,53 +171,47 @@ class _HomeScreenState extends State<HomeScreen> {
               end: AlignmentGeometry.bottomCenter,
             ),
           ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppDimensions.spaceXL,
-              vertical: AppDimensions.spaceL,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(Icons.calendar_month, size: AppDimensions.iconSizeXS),
-                    SizedBox(width: AppDimensions.spaceS),
-                    Text(
-                      'Total Expenses',
-                      style: AppTheme.dark.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                SizedBox(height: AppDimensions.spaceXS),
-                Text(
-                  'TZS ${numberFormat(state.data!.summary.thisMonthExpenses)}',
-                  style: AppTheme.dark.textTheme.titleLarge!.copyWith(
-                    fontSize: 24,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(Icons.calendar_month, size: AppDimensions.iconSizeXS),
+                  SizedBox(width: AppDimensions.spaceS),
+                  Text(
+                    'Total Expenses',
+                    style: AppTheme.dark.textTheme.bodySmall,
                   ),
+                ],
+              ),
+              SizedBox(height: AppDimensions.spaceXS),
+              Text(
+                'TZS ${numberFormat(state.data!.summary.thisMonthExpenses)}',
+                style: AppTheme.dark.textTheme.titleLarge!.copyWith(
+                  fontSize: 24,
                 ),
-                SizedBox(height: AppDimensions.spaceXS),
-                Row(
-                  children: <Widget>[
-                    percentageChange > 0
-                        ? Icon(
-                            Icons.add,
-                            size: AppDimensions.iconSizeXS,
-                            color: context.appColors.danger,
-                          )
-                        : Icon(
-                            Icons.remove,
-                            size: AppDimensions.iconSizeXS,
-                            color: context.appColors.success,
-                          ),
-                    Text(
-                      '$percentageChange% since last month',
-                      style: AppTheme.dark.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+              SizedBox(height: AppDimensions.spaceXS),
+              Row(
+                children: <Widget>[
+                  percentageChange > 0
+                      ? Icon(
+                          Icons.add,
+                          size: AppDimensions.iconSizeXS,
+                          color: context.appColors.danger,
+                        )
+                      : Icon(
+                          Icons.remove,
+                          size: AppDimensions.iconSizeXS,
+                          color: context.appColors.success,
+                        ),
+                  Text(
+                    '$percentageChange% since last month',
+                    style: AppTheme.dark.textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -290,6 +293,43 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
       ],
+    );
+  }
+
+  Widget _buildShimmer() {
+    return Shimmer.fromColors(
+      baseColor: context.colorScheme.primary.withAlpha(18),
+      highlightColor: context.appColors.background!.withAlpha(54),
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            width: double.infinity,
+            height: 128.0,
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+          ),
+          SizedBox(height: AppDimensions.spaceXL),
+          GridView.count(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            childAspectRatio: (1 / 0.2),
+            crossAxisCount: 1,
+            crossAxisSpacing: AppDimensions.spaceM,
+            mainAxisSpacing: AppDimensions.spaceM,
+            children: const <Widget>[
+              Card(elevation: 0),
+              Card(elevation: 0),
+              Card(elevation: 0),
+              Card(elevation: 0),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
