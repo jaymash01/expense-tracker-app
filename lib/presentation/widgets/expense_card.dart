@@ -43,7 +43,11 @@ class ExpenseCard extends StatelessWidget {
                     color: context.colorScheme.primary,
                     child: Center(
                       child: Text(
-                        expense.category!.name[0],
+                        expense.category!.name
+                            .trimLeft()
+                            .characters
+                            .first
+                            .toUpperCase(),
                         style: TextStyle(
                           color: context.colorScheme.onPrimary,
                           fontSize: 16,
