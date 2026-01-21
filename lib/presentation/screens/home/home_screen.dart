@@ -221,7 +221,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildInsights(DashboardState state) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       child: Padding(
         padding: EdgeInsets.all(AppDimensions.spaceM),
         child: Column(
