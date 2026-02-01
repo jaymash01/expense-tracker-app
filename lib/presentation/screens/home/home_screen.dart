@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: context.appColors.success,
                         ),
                   Text(
-                    '$percentageChange% since last month',
+                    '${percentageChange.abs()}% since last month',
                     style: AppTheme.dark.textTheme.bodySmall,
                   ),
                 ],
