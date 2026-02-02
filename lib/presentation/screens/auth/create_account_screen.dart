@@ -135,7 +135,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text("Already have an account? "),
+                          const Text('Already have an account? '),
                           GestureDetector(
                             onTap: () => Navigator.pushReplacementNamed(
                               context,
