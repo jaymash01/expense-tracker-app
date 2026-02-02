@@ -47,115 +47,110 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height * 0.75,
                   ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Image.asset(
-                            'assets/images/logo.png',
-                            width: 96.0,
-                            fit: BoxFit.fitWidth,
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/logo.png',
+                        width: 96.0,
+                        fit: BoxFit.fitWidth,
+                      ),
+                      SizedBox(height: AppDimensions.spaceXL),
+                      Text(
+                        'Welcome',
+                        style: context.textTheme.titleLarge!.copyWith(
+                          color: context.colorScheme.primary,
                         ),
-                        SizedBox(height: AppDimensions.spaceXL),
-                        Text(
-                          'Welcome',
-                          style: context.textTheme.titleLarge!.copyWith(
-                            color: context.colorScheme.primary,
-                          ),
+                      ),
+                      SizedBox(height: AppDimensions.spaceXS),
+                      Text(
+                        'Sign up to track your expenses',
+                        style: context.textTheme.titleSmall!.merge(
+                          TextStyle(color: context.textTheme.labelSmall!.color),
                         ),
-                        SizedBox(height: AppDimensions.spaceXS),
-                        Text(
-                          'Sign up to track your expenses',
-                          style: context.textTheme.titleSmall!.merge(
-                            TextStyle(
-                              color: context.textTheme.labelSmall!.color,
-                            ),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: AppDimensions.spaceXL),
-                        FormLabelControl(
-                          label: 'Full Name',
-                          child: TextField(
-                            keyboardType: TextInputType.name,
-                            onChanged: (String value) {
-                              BlocProvider.of<CreateAccountBloc>(
-                                context,
-                              ).add(CreateAccountNameChanged(value));
-                            },
-                          ),
-                        ),
-                        SizedBox(height: AppDimensions.spaceM),
-                        FormLabelControl(
-                          label: 'Email',
-                          child: TextField(
-                            keyboardType: TextInputType.emailAddress,
-                            onChanged: (String value) {
-                              BlocProvider.of<CreateAccountBloc>(
-                                context,
-                              ).add(CreateAccountEmailChanged(value));
-                            },
-                          ),
-                        ),
-                        SizedBox(height: AppDimensions.spaceM),
-                        FormLabelControl(
-                          label: 'Password',
-                          child: TextField(
-                            obscureText: !_showPassword,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _showPassword = !_showPassword;
-                                  });
-                                },
-                                icon: Icon(
-                                  _showPassword
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                ),
-                              ),
-                            ),
-                            onChanged: (String value) {
-                              BlocProvider.of<CreateAccountBloc>(
-                                context,
-                              ).add(CreateAccountPasswordChanged(value));
-                            },
-                          ),
-                        ),
-                        SizedBox(height: AppDimensions.spaceXL),
-                        LoadingButton(
-                          loading: state.isLoading,
-                          child: const Text('Submit'),
-                          onPressed: () {
-                            if (_validateForm(state)) {
-                              bloc.add(CreateAccountSubmitted());
-                            }
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: AppDimensions.spaceXL),
+                      FormLabelControl(
+                        label: 'Full Name',
+                        child: TextField(
+                          keyboardType: TextInputType.name,
+                          onChanged: (String value) {
+                            BlocProvider.of<CreateAccountBloc>(
+                              context,
+                            ).add(CreateAccountNameChanged(value));
                           },
                         ),
-                        SizedBox(height: AppDimensions.spaceXL),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Text("Already have an account? "),
-                            GestureDetector(
-                              onTap: () => Navigator.pushReplacementNamed(
-                                context,
-                                AppRoutes.login,
-                              ),
-                              child: Text(
-                                'Login',
-                                style: context.textTheme.titleSmall!.copyWith(
-                                  color: context.colorScheme.primary,
-                                ),
+                      ),
+                      SizedBox(height: AppDimensions.spaceM),
+                      FormLabelControl(
+                        label: 'Email',
+                        child: TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (String value) {
+                            BlocProvider.of<CreateAccountBloc>(
+                              context,
+                            ).add(CreateAccountEmailChanged(value));
+                          },
+                        ),
+                      ),
+                      SizedBox(height: AppDimensions.spaceM),
+                      FormLabelControl(
+                        label: 'Password',
+                        child: TextField(
+                          obscureText: !_showPassword,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _showPassword = !_showPassword;
+                                });
+                              },
+                              icon: Icon(
+                                _showPassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
                               ),
                             ),
-                          ],
+                          ),
+                          onChanged: (String value) {
+                            BlocProvider.of<CreateAccountBloc>(
+                              context,
+                            ).add(CreateAccountPasswordChanged(value));
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: AppDimensions.spaceXL),
+                      LoadingButton(
+                        loading: state.isLoading,
+                        child: const Text('Submit'),
+                        onPressed: () {
+                          if (_validateForm(state)) {
+                            bloc.add(CreateAccountSubmitted());
+                          }
+                        },
+                      ),
+                      SizedBox(height: AppDimensions.spaceXL),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Text("Already have an account? "),
+                          GestureDetector(
+                            onTap: () => Navigator.pushReplacementNamed(
+                              context,
+                              AppRoutes.login,
+                            ),
+                            child: Text(
+                              'Login',
+                              style: context.textTheme.titleSmall!.copyWith(
+                                color: context.colorScheme.primary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),

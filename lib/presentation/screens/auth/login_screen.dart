@@ -47,104 +47,100 @@ class _LoginScreenState extends State<LoginScreen> {
                       constraints: BoxConstraints(
                         minHeight: MediaQuery.of(context).size.height * 0.8,
                       ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Center(
-                              child: Image.asset(
-                                'assets/images/logo.png',
-                                width: 96.0,
-                                fit: BoxFit.fitWidth,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/logo.png',
+                            width: 96.0,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          SizedBox(height: AppDimensions.spaceXL),
+                          Text(
+                            'Welcome',
+                            style: context.textTheme.titleLarge!.copyWith(
+                              color: context.colorScheme.primary,
+                            ),
+                          ),
+                          SizedBox(height: AppDimensions.spaceXS),
+                          Text(
+                            'Sign in to track your expenses',
+                            style: context.textTheme.titleSmall!.merge(
+                              TextStyle(
+                                color: context.textTheme.labelSmall!.color,
                               ),
                             ),
-                            SizedBox(height: AppDimensions.spaceXL),
-                            Text(
-                              'Welcome',
-                              style: context.textTheme.titleLarge!.copyWith(
-                                color: context.colorScheme.primary,
-                              ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: AppDimensions.spaceXL),
+                          TextField(
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: const InputDecoration(
+                              hintText: 'Email',
+                              prefixIcon: Icon(Icons.alternate_email),
                             ),
-                            SizedBox(height: AppDimensions.spaceXS),
-                            Text(
-                              'Sign in to track your expenses',
-                              style: context.textTheme.titleSmall!.merge(
-                                TextStyle(
-                                  color: context.textTheme.labelSmall!.color,
+                            onChanged: (String value) {
+                              BlocProvider.of<LoginBloc>(
+                                context,
+                              ).add(LoginUsernameChanged(value));
+                            },
+                          ),
+                          SizedBox(height: AppDimensions.spaceL),
+                          TextField(
+                            obscureText: !_showPassword,
+                            decoration: InputDecoration(
+                              hintText: 'Password',
+                              prefixIcon: const Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _showPassword = !_showPassword;
+                                  });
+                                },
+                                icon: Icon(
+                                  _showPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: AppDimensions.spaceXL),
-                            TextField(
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                hintText: 'Email',
-                                prefixIcon: Icon(Icons.alternate_email),
-                              ),
-                              onChanged: (String value) {
-                                BlocProvider.of<LoginBloc>(
+                            onChanged: (String value) {
+                              BlocProvider.of<LoginBloc>(
+                                context,
+                              ).add(LoginPasswordChanged(value));
+                            },
+                          ),
+                          SizedBox(height: AppDimensions.spaceXL),
+                          LoadingButton(
+                            loading: state.isLoading,
+                            child: const Text('Login'),
+                            onPressed: () {
+                              if (_validateForm(state)) {
+                                bloc.add(LoginSubmitted());
+                              }
+                            },
+                          ),
+                          SizedBox(height: AppDimensions.spaceXL),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Text("Don't have an account? "),
+                              GestureDetector(
+                                onTap: () => Navigator.pushReplacementNamed(
                                   context,
-                                ).add(LoginUsernameChanged(value));
-                              },
-                            ),
-                            SizedBox(height: AppDimensions.spaceL),
-                            TextField(
-                              obscureText: !_showPassword,
-                              decoration: InputDecoration(
-                                hintText: 'Password',
-                                prefixIcon: const Icon(Icons.lock),
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _showPassword = !_showPassword;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    _showPassword
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                  AppRoutes.createAccount,
+                                ),
+                                child: Text(
+                                  'Sign up',
+                                  style: context.textTheme.titleSmall!.copyWith(
+                                    color: context.colorScheme.primary,
                                   ),
                                 ),
                               ),
-                              onChanged: (String value) {
-                                BlocProvider.of<LoginBloc>(
-                                  context,
-                                ).add(LoginPasswordChanged(value));
-                              },
-                            ),
-                            SizedBox(height: AppDimensions.spaceXL),
-                            LoadingButton(
-                              loading: state.isLoading,
-                              child: const Text('Login'),
-                              onPressed: () {
-                                if (_validateForm(state)) {
-                                  bloc.add(LoginSubmitted());
-                                }
-                              },
-                            ),
-                            SizedBox(height: AppDimensions.spaceXL),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                const Text("Don't have an account? "),
-                                GestureDetector(
-                                  onTap: () => Navigator.pushReplacementNamed(
-                                    context,
-                                    AppRoutes.createAccount,
-                                  ),
-                                  child: Text(
-                                    'Sign up',
-                                    style: context.textTheme.titleSmall!
-                                        .copyWith(
-                                          color: context.colorScheme.primary,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
