@@ -152,7 +152,7 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
                 child: const Text('Submit'),
                 onPressed: () {
                   if (_validateForm()) {
-                    submit();
+                    _submit();
                   }
                 },
               ),
@@ -196,7 +196,7 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
     return true;
   }
 
-  void submit() async {
+  void _submit() async {
     setState(() {
       _isLoading = true;
     });

@@ -102,7 +102,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                 child: const Text('Submit'),
                 onPressed: () {
                   if (_validateForm()) {
-                    submit();
+                    _submit();
                   }
                 },
               ),
@@ -209,7 +209,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
     return true;
   }
 
-  void submit() async {
+  void _submit() async {
     setState(() {
       _isLoading = true;
     });

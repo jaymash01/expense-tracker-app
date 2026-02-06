@@ -94,7 +94,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 child: const Text('Submit'),
                 onPressed: () {
                   if (_validateForm()) {
-                    submit();
+                    _submit();
                   }
                 },
               ),
@@ -119,7 +119,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return true;
   }
 
-  void submit() async {
+  void _submit() async {
     setState(() {
       _isLoading = true;
     });

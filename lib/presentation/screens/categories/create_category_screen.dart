@@ -73,7 +73,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                 child: const Text('Submit'),
                 onPressed: () {
                   if (_validateForm()) {
-                    submit();
+                    _submit();
                   }
                 },
               ),
@@ -97,7 +97,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
     return true;
   }
 
-  void submit() async {
+  void _submit() async {
     setState(() {
       _isLoading = true;
     });

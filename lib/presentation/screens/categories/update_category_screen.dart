@@ -99,7 +99,7 @@ class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
                 child: const Text('Submit'),
                 onPressed: () {
                   if (_validateForm()) {
-                    submit();
+                    _submit();
                   }
                 },
               ),
@@ -123,7 +123,7 @@ class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
     return true;
   }
 
-  void submit() async {
+  void _submit() async {
     setState(() {
       _isLoading = true;
     });
