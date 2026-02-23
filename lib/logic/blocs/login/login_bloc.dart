@@ -1,10 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expense_tracker/data/repositories/auth_repository.dart';
-import 'package:expense_tracker/core/config/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/logic/blocs/auth/auth_event.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'login_event.dart';
 import 'login_state.dart';
@@ -31,14 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           'password': state.password,
         });
 
-        final storage = FlutterSecureStorage();
-        final token = response.data!.token;
-
-        await storage.write(key: Preferences.token, value: token);
-
-        authBloc.add(AuthLoggedIn(token));
-        authBloc.add(AuthUserFetched(token));
-
+        authBloc.add(AuthLoggedIn(response.data!.token));
         emit(state.copyWith(isLoading: false, isSuccess: true));
       } catch (e) {
         emit(

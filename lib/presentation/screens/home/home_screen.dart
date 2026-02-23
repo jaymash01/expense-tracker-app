@@ -11,7 +11,7 @@ import 'package:expense_tracker/logic/blocs/dashboard/dashboard_state.dart';
 import 'package:expense_tracker/presentation/navigation/app_routes.dart';
 import 'package:expense_tracker/presentation/widgets/avatar.dart';
 import 'package:expense_tracker/presentation/widgets/empty_placeholder.dart';
-import 'package:expense_tracker/presentation/widgets/expense_card.dart';
+import 'package:expense_tracker/presentation/widgets/expenses_by_category_card.dart';
 import 'package:expense_tracker/presentation/widgets/screen_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           includeBottom: false,
           child: RefreshIndicator(
             onRefresh: () async {
-              context.read<AuthBloc>().add(AuthUserFetched(null));
+              context.read<AuthBloc>().add(AuthUserFetched());
               context.read<DashboardBloc>().add(LoadDashboard());
               await Future.delayed(Duration.zero);
             },
@@ -136,12 +136,13 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             _buildDashboardHeader(state),
-            if ((state.data!.summary.aiInsights ?? '').isNotEmpty)
-              SizedBox(height: AppDimensions.spaceL),
+            SizedBox(height: AppDimensions.spaceL),
+            _buildExpensesByCategoryList(state),
+            if ((state.data!.summary.aiInsights ?? '').isNotEmpty &&
+                state.data!.lists.expensesByCategory.isNotEmpty)
+              SizedBox(height: AppDimensions.spaceS),
             if ((state.data!.summary.aiInsights ?? '').isNotEmpty)
               _buildInsights(state),
-            SizedBox(height: AppDimensions.spaceL),
-            _buildRecentExpensesList(state),
           ],
         );
       },
@@ -220,40 +221,77 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildExpensesByCategoryList(DashboardState state) {
+    final items = state.data!.lists.expensesByCategory;
+
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ExpensesByCategoryCard(
+          category: items[index],
+          totalAmount: state.data!.summary.thisMonthExpenses,
+          index: index,
+        );
+      },
+    );
+  }
+
   Widget _buildInsights(DashboardState state) {
     return Card(
-      child: Padding(
-        padding: EdgeInsets.all(AppDimensions.spaceM),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _showInsights = !_showInsights;
-                });
-              },
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      '✨ AI Insights',
-                      style: context.textTheme.titleSmall!.copyWith(
-                        color: context.textTheme.bodySmall!.color,
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _showInsights = !_showInsights;
+              });
+            },
+            child: Theme(
+              data: AppTheme.dark,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppDimensions.spaceXL,
+                  vertical: AppDimensions.spaceM,
+                ),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: <Color>[Colors.purple, Colors.indigo, Colors.teal],
+                    begin: AlignmentGeometry.topLeft,
+                    end: AlignmentGeometry.bottomRight,
+                  ),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        '✨ AI Insights',
+                        style: AppTheme.dark.textTheme.titleMedium,
                       ),
                     ),
-                  ),
-                  Icon(
-                    _showInsights
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
-                  ),
-                ],
+                    SizedBox(
+                      width: 16.0,
+                      child: Icon(
+                        _showInsights
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            if (_showInsights) SizedBox(height: AppDimensions.spaceS),
-            if (_showInsights)
-              Container(
+          ),
+          if (_showInsights) SizedBox(height: AppDimensions.spaceS),
+          if (_showInsights)
+            Padding(
+              padding: EdgeInsets.all(AppDimensions.spaceM),
+              child: Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: AppDimensions.spaceS,
                   vertical: AppDimensions.spaceXS,
@@ -274,49 +312,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildRecentExpensesList(DashboardState state) {
-    final items = state.data!.lists.recentExpenses;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                'Recent Expenses',
-                style: context.textTheme.titleSmall!.copyWith(
-                  color: context.textTheme.bodySmall!.color,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () => Navigator.pushNamed(context, AppRoutes.expenses),
-              child: Text('View all', style: context.textTheme.bodySmall),
-            ),
-          ],
-        ),
-        SizedBox(height: AppDimensions.spaceM),
-        ListView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: items.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ExpenseCard(
-              expense: items[index],
-              showDescription: false,
-              showActions: false,
-            );
-          },
-        ),
-      ],
     );
   }
 

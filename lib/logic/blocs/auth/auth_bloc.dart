@@ -21,14 +21,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(isLoading: true));
 
     try {
-      final token = await authRepository.getToken();
+      final token = await authRepository.getAccessToken();
 
       if (token != null) {
-        emit(
-          state.copyWith(isAuthenticated: true, token: token, isLoading: false),
-        );
+        emit(state.copyWith(isAuthenticated: true, isLoading: false));
 
-        add(AuthUserFetched(token));
+        add(AuthUserFetched());
       } else {
         emit(state.copyWith(isAuthenticated: false, isLoading: false));
       }
@@ -37,8 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onAuthLoggedIn(AuthLoggedIn event, Emitter<AuthState> emit) {
-    emit(state.copyWith(isAuthenticated: true, token: event.token));
+  void _onAuthLoggedIn(AuthLoggedIn event, Emitter<AuthState> emit) async {
+    await authRepository.setAccessToken(event.token);
+
+    emit(state.copyWith(isAuthenticated: true));
+    add(AuthUserFetched());
   }
 
   Future<void> _onAuthUserFetched(
@@ -48,21 +49,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(isLoading: true));
 
     try {
-      final token = event.token ?? state.token;
-
-      if (token != null) {
-        final user = await authRepository.fetchUserDetails(token);
-        emit(
-          state.copyWith(user: user, isAuthenticated: true, isLoading: false),
-        );
-      }
+      final user = await authRepository.fetchUserDetails();
+      emit(state.copyWith(user: user, isAuthenticated: true, isLoading: false));
     } catch (e) {
-      final error = e.toString();
-      if (error == 'Unauthenticated') {
-        add(AuthLoggedOut());
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+      // Ignored
     }
   }
 

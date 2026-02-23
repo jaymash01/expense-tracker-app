@@ -1,6 +1,5 @@
 import 'package:expense_tracker/data/models/expense_model.dart';
 import 'package:expense_tracker/data/repositories/expenses_repository.dart';
-import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'expenses_event.dart';
@@ -9,9 +8,8 @@ import 'expenses_state.dart';
 class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
   final int pageSize = 15;
   final ExpensesRepository expensesRepository = ExpensesRepository();
-  final AuthBloc authBloc;
 
-  ExpensesBloc({required this.authBloc}) : super(ExpensesState(expenses: [])) {
+  ExpensesBloc() : super(ExpensesState(expenses: [])) {
     on<LoadExpenses>(_onLoadExpenses);
     on<LoadMoreExpenses>(_onLoadMoreExpenses);
     on<DeleteExpense>(_onDeleteExpense);
@@ -31,8 +29,6 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
         ),
       );
 
-      final token = authBloc.state.token ?? '';
-
       Map<String, dynamic> params = <String, dynamic>{
         'page': '1',
         'per_page': '$pageSize',
@@ -43,7 +39,6 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
       }
 
       ExpensesResponse response = await expensesRepository.fetchExpenses(
-        token,
         params,
       );
 
@@ -69,8 +64,6 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
     try {
       emit(state.copyWith(isLoading: true));
 
-      final token = authBloc.state.token ?? '';
-
       Map<String, dynamic> params = <String, dynamic>{
         'page': '${state.currentPage + 1}',
         'per_page': '$pageSize',
@@ -81,7 +74,6 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
       }
 
       ExpensesResponse response = await expensesRepository.fetchExpenses(
-        token,
         params,
       );
       List<Expense> expenses = state.expenses;
@@ -110,9 +102,7 @@ class ExpensesBloc extends Bloc<ExpensesEvent, ExpensesState> {
       expenses.removeWhere((element) => element.id == event.expense.id);
       emit(state.copyWith(expenses: expenses));
 
-      final token = authBloc.state.token ?? '';
-
-      await expensesRepository.deleteExpense(token, event.expense.id);
+      await expensesRepository.deleteExpense(event.expense.id);
 
       if (event.onSuccess != null) {
         event.onSuccess!();

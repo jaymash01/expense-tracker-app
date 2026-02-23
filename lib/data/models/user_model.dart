@@ -15,21 +15,3 @@ class User {
     );
   }
 }
-
-class UsersResponse {
-  int total;
-  int page;
-  List<User> data = [];
-
-  UsersResponse({required this.total, required this.page, required this.data});
-
-  factory UsersResponse.fromJson(Map<String, dynamic> json) {
-    return UsersResponse(
-      total: json['data']['total'],
-      page: json['data']['current_page'],
-      data: List<User>.from(
-        json['data']['data'].map((model) => User.fromJson(model)),
-      ),
-    );
-  }
-}

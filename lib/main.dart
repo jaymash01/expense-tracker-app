@@ -38,16 +38,13 @@ void main() async {
           create: (BuildContext context) => HomeNavigationBloc(),
         ),
         BlocProvider<DashboardBloc>(
-          create: (BuildContext context) =>
-              DashboardBloc(authBloc: context.read<AuthBloc>()),
+          create: (BuildContext context) => DashboardBloc(),
         ),
         BlocProvider<CategoriesBloc>(
-          create: (BuildContext context) =>
-              CategoriesBloc(authBloc: context.read<AuthBloc>()),
+          create: (BuildContext context) => CategoriesBloc(),
         ),
         BlocProvider<ExpensesBloc>(
-          create: (BuildContext context) =>
-              ExpensesBloc(authBloc: context.read<AuthBloc>()),
+          create: (BuildContext context) => ExpensesBloc(),
         ),
       ],
       child: const MyApp(),

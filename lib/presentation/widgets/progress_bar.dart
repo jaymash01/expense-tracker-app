@@ -5,42 +5,39 @@ import 'package:flutter/material.dart';
 class ProgressBar extends StatelessWidget {
   final double value;
   final double? height;
+  final Color? color;
 
-  const ProgressBar({super.key, required this.value, this.height = 8});
+  const ProgressBar({
+    super.key,
+    required this.value,
+    this.height = 8,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: height,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: context.colorScheme.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-          ),
-        ),
-        FractionallySizedBox(
-          widthFactor: value,
-          child: Container(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+      child: Stack(
+        children: [
+          Container(
             height: height,
+            width: double.infinity,
             decoration: BoxDecoration(
-              color: _getProgressColor(value, context),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+              color: context.colorScheme.primary.withValues(alpha: 0.1),
             ),
           ),
-        ),
-      ],
+          FractionallySizedBox(
+            widthFactor: value,
+            child: Container(
+              height: height,
+              decoration: BoxDecoration(
+                color: color ?? context.colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
-  }
-
-  Color _getProgressColor(double progress, BuildContext context) {
-    if (progress >= 0.75) {
-      return context.appColors.success ?? Colors.green;
-    } else if (progress >= 0.5) {
-      return context.appColors.warning ?? Colors.orange;
-    } else {
-      return context.colorScheme.error;
-    }
   }
 }

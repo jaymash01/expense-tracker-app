@@ -94,17 +94,3 @@ class UpdateExpenseResponse {
     );
   }
 }
-
-class DeleteExpenseResponse {
-  String message;
-  Expense? data;
-
-  DeleteExpenseResponse({required this.message, this.data});
-
-  factory DeleteExpenseResponse.fromJson(Map<String, dynamic> json) {
-    return DeleteExpenseResponse(
-      message: json['message'],
-      data: json['data'] != null ? Expense.fromJson(json['data']) : null,
-    );
-  }
-}

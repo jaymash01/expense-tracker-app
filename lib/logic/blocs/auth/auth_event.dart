@@ -9,14 +9,7 @@ abstract class AuthEvent extends Equatable {
 
 class AuthCheckRequested extends AuthEvent {}
 
-class AuthUserFetched extends AuthEvent {
-  final String? token;
-
-  const AuthUserFetched(this.token);
-
-  @override
-  List<Object?> get props => [token];
-}
+class AuthUserFetched extends AuthEvent {}
 
 class AuthLoggedIn extends AuthEvent {
   final String token;

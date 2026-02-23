@@ -3,7 +3,6 @@ import 'package:expense_tracker/core/utils/comma_text_input_formatter.dart';
 import 'package:expense_tracker/core/utils/extensions.dart';
 import 'package:expense_tracker/core/utils/helpers.dart';
 import 'package:expense_tracker/data/repositories/expenses_repository.dart';
-import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
 import 'package:expense_tracker/logic/blocs/dashboard/dashboard_bloc.dart';
@@ -201,29 +200,27 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
     });
 
     try {
-      final authBloc = context.read<AuthBloc>();
-      final token = authBloc.state.token ?? '';
-      final body = _formData;
-
-      final response = await _expensesRepository.createExpense(token, body);
+      final response = await _expensesRepository.createExpense(_formData);
       setState(() {
         _isLoading = true;
       });
 
-      appAlert(
-        context,
-        response.message,
-        type: AlertType.success,
-        duration: const Duration(seconds: 10),
-      );
+      if (mounted) {
+        appAlert(
+          context,
+          response.message,
+          type: AlertType.success,
+          duration: const Duration(seconds: 10),
+        );
 
-      appAlert(context, response.message, type: AlertType.success);
-      context.read<ExpensesBloc>().add(LoadExpenses(null));
-      context.read<DashboardBloc>().add(LoadDashboard());
-
-      Navigator.pop(context);
+        context.read<ExpensesBloc>().add(LoadExpenses(null));
+        context.read<DashboardBloc>().add(LoadDashboard());
+        Navigator.pop(context);
+      }
     } catch (e) {
-      appAlert(context, e.toString(), type: AlertType.error);
+      if (mounted) {
+        appAlert(context, e.toString(), type: AlertType.error);
+      }
     } finally {
       setState(() {
         _isLoading = false;

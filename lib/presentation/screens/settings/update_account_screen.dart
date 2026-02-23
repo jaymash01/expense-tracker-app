@@ -216,32 +216,30 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
 
     try {
       final authBloc = context.read<AuthBloc>();
-      final token = authBloc.state.token ?? '';
-      final body = _formData;
-
       final response = await _authRepository.updateAccount(
-        token,
         _photo?.path,
-        body,
+        _formData,
       );
 
       setState(() {
         _isLoading = true;
       });
 
-      appAlert(
-        context,
-        response.message,
-        type: AlertType.success,
-        duration: const Duration(seconds: 10),
-      );
+      if (mounted) {
+        appAlert(
+          context,
+          response.message,
+          type: AlertType.success,
+          duration: const Duration(seconds: 10),
+        );
 
-      appAlert(context, response.message, type: AlertType.success);
-      authBloc.add(AuthUserFetched(token));
-
-      Navigator.pop(context);
+        authBloc.add(AuthUserFetched());
+        Navigator.pop(context);
+      }
     } catch (e) {
-      appAlert(context, e.toString(), type: AlertType.error);
+      if (mounted) {
+        appAlert(context, e.toString(), type: AlertType.error);
+      }
     } finally {
       setState(() {
         _isLoading = false;

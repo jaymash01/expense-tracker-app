@@ -1,7 +1,6 @@
 import 'package:expense_tracker/core/config/app_dimensions.dart';
 import 'package:expense_tracker/data/models/category_model.dart';
 import 'package:expense_tracker/data/repositories/categories_repository.dart';
-import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
 import 'package:expense_tracker/logic/blocs/dashboard/dashboard_bloc.dart';
@@ -129,34 +128,31 @@ class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
     });
 
     try {
-      final authBloc = context.read<AuthBloc>();
-      final token = authBloc.state.token ?? '';
-      final body = _formData;
-
       final response = await _categoriesRepository.updateCategory(
-        token,
         widget.category.id,
-        body,
+        _formData,
       );
       setState(() {
         _isLoading = true;
       });
 
-      appAlert(
-        context,
-        response.message,
-        type: AlertType.success,
-        duration: const Duration(seconds: 10),
-      );
+      if (mounted) {
+        appAlert(
+          context,
+          response.message,
+          type: AlertType.success,
+          duration: const Duration(seconds: 10),
+        );
 
-      appAlert(context, response.message, type: AlertType.success);
-      context.read<CategoriesBloc>().add(LoadCategories(null));
-      context.read<ExpensesBloc>().add(LoadExpenses(null));
-      context.read<DashboardBloc>().add(LoadDashboard());
-
-      Navigator.pop(context);
+        context.read<CategoriesBloc>().add(LoadCategories(null));
+        context.read<ExpensesBloc>().add(LoadExpenses(null));
+        context.read<DashboardBloc>().add(LoadDashboard());
+        Navigator.pop(context);
+      }
     } catch (e) {
-      appAlert(context, e.toString(), type: AlertType.error);
+      if (mounted) {
+        appAlert(context, e.toString(), type: AlertType.error);
+      }
     } finally {
       setState(() {
         _isLoading = false;

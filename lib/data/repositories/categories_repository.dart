@@ -1,67 +1,49 @@
 import 'dart:async';
 
 import 'package:expense_tracker/core/config/constants.dart';
-import 'package:expense_tracker/core/utils/http.dart' as http;
+import 'package:expense_tracker/core/network/dio_client.dart' as dio;
 import 'package:expense_tracker/data/models/category_model.dart';
 
 class CategoriesRepository {
   Future<CreateCategoryResponse> createCategory(
-    String token,
     Map<String, dynamic> body,
   ) async {
-    dynamic jsonResponse = await http.post(
-      url: '$baseUrl/api/categories',
-      body: body,
-      headers: <String, String>{'Authorization': 'Bearer $token'},
-    );
+    dynamic jsonResponse = await dio.post(url: '/api/categories', body: body);
 
     return CreateCategoryResponse.fromJson(jsonResponse);
   }
 
   Future<CategoriesResponse> fetchCategories(
-    String token,
     Map<String, dynamic>? params,
   ) async {
-    dynamic jsonResponse = await http.get(
-      url: '$baseUrl/api/categories',
+    dynamic jsonResponse = await dio.get(
+      url: '/api/categories',
       params: params,
-      headers: <String, String>{'Authorization': 'Bearer $token'},
     );
 
     return CategoriesResponse.fromJson(jsonResponse);
   }
 
-  Future<CategoryDetailsResponse> fetchCategoryDetails(
-    String token,
-    int id,
-  ) async {
-    dynamic jsonResponse = await http.get(
-      url: '$baseUrl/api/categories/$id',
-      headers: <String, String>{'Authorization': 'Bearer $token'},
-    );
+  Future<CategoryDetailsResponse> fetchCategoryDetails(int id) async {
+    dynamic jsonResponse = await dio.get(url: '/api/categories/$id');
 
     return CategoryDetailsResponse.fromJson(jsonResponse);
   }
 
   Future<UpdateCategoryResponse> updateCategory(
-    String token,
     int id,
     Map<String, dynamic> body,
   ) async {
-    dynamic jsonResponse = await http.patch(
-      url: '$baseUrl/api/categories/$id',
+    dynamic jsonResponse = await dio.patch(
+      url: '/api/categories/$id',
       body: body,
-      headers: <String, String>{'Authorization': 'Bearer $token'},
     );
 
     return UpdateCategoryResponse.fromJson(jsonResponse);
   }
 
-  Future<DeleteCategoryResponse> deleteCategory(String token, int id) async {
-    dynamic jsonResponse = await http.delete(
-      url: '$baseUrl/api/categories/$id',
-      headers: <String, String>{'Authorization': 'Bearer $token'},
-    );
+  Future<DeleteCategoryResponse> deleteCategory(int id) async {
+    dynamic jsonResponse = await dio.delete(url: '/api/categories/$id');
 
     return DeleteCategoryResponse.fromJson(jsonResponse);
   }

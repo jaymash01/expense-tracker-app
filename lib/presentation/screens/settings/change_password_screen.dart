@@ -1,12 +1,10 @@
 import 'package:expense_tracker/core/config/app_dimensions.dart';
 import 'package:expense_tracker/data/repositories/auth_repository.dart';
-import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/presentation/widgets/app_alert.dart';
 import 'package:expense_tracker/presentation/widgets/form_label_control.dart';
 import 'package:expense_tracker/presentation/widgets/loading_button.dart';
 import 'package:expense_tracker/presentation/widgets/screen_safe_area.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -125,26 +123,26 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     });
 
     try {
-      final token = context.read<AuthBloc>().state.token ?? '';
-      final body = _formData;
-
-      final response = await _authRepository.changePassword(token, body);
+      final response = await _authRepository.changePassword(_formData);
 
       setState(() {
         _isLoading = true;
       });
 
-      appAlert(
-        context,
-        response.message,
-        type: AlertType.success,
-        duration: const Duration(seconds: 10),
-      );
+      if (mounted) {
+        appAlert(
+          context,
+          response.message,
+          type: AlertType.success,
+          duration: const Duration(seconds: 10),
+        );
 
-      appAlert(context, response.message, type: AlertType.success);
-      Navigator.pop(context);
+        Navigator.pop(context);
+      }
     } catch (e) {
-      appAlert(context, e.toString(), type: AlertType.error);
+      if (mounted) {
+        appAlert(context, e.toString(), type: AlertType.error);
+      }
     } finally {
       setState(() {
         _isLoading = false;

@@ -1,6 +1,5 @@
 import 'package:expense_tracker/core/config/app_dimensions.dart';
 import 'package:expense_tracker/data/repositories/categories_repository.dart';
-import 'package:expense_tracker/logic/blocs/auth/auth_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_bloc.dart';
 import 'package:expense_tracker/logic/blocs/categories/categories_event.dart';
 import 'package:expense_tracker/presentation/widgets/app_alert.dart';
@@ -103,28 +102,26 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
     });
 
     try {
-      final authBloc = context.read<AuthBloc>();
-      final token = authBloc.state.token ?? '';
-      final body = _formData;
-
-      final response = await _categoriesRepository.createCategory(token, body);
+      final response = await _categoriesRepository.createCategory(_formData);
       setState(() {
         _isLoading = true;
       });
 
-      appAlert(
-        context,
-        response.message,
-        type: AlertType.success,
-        duration: const Duration(seconds: 10),
-      );
+      if (mounted) {
+        appAlert(
+          context,
+          response.message,
+          type: AlertType.success,
+          duration: const Duration(seconds: 10),
+        );
 
-      appAlert(context, response.message, type: AlertType.success);
-      context.read<CategoriesBloc>().add(LoadCategories(null));
-
-      Navigator.pop(context);
+        context.read<CategoriesBloc>().add(LoadCategories(null));
+        Navigator.pop(context);
+      }
     } catch (e) {
-      appAlert(context, e.toString(), type: AlertType.error);
+      if (mounted) {
+        appAlert(context, e.toString(), type: AlertType.error);
+      }
     } finally {
       setState(() {
         _isLoading = false;

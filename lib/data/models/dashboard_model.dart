@@ -20,15 +20,35 @@ class DashboardSummary {
   }
 }
 
+class ExpensesByCategory {
+  String name;
+  num amount;
+
+  ExpensesByCategory({required this.name, required this.amount});
+
+  factory ExpensesByCategory.fromJson(Map<String, dynamic> json) {
+    return ExpensesByCategory(name: json['name'], amount: json['amount']);
+  }
+}
+
 class DashboardLists {
   List<Expense> recentExpenses;
+  List<ExpensesByCategory> expensesByCategory;
 
-  DashboardLists({required this.recentExpenses});
+  DashboardLists({
+    required this.recentExpenses,
+    required this.expensesByCategory,
+  });
 
   factory DashboardLists.fromJson(Map<String, dynamic> json) {
     return DashboardLists(
       recentExpenses: List<Expense>.from(
         json['recent_expenses'].map((model) => Expense.fromJson(model)),
+      ),
+      expensesByCategory: List<ExpensesByCategory>.from(
+        json['expenses_by_category'].map(
+          (model) => ExpensesByCategory.fromJson(model),
+        ),
       ),
     );
   }
